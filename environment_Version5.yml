@@ -1,0 +1,11 @@
+name: octave-env
+channels:
+  - conda-forge
+dependencies:
+  - octave
+  - sundials
+  - python
+  - pip
+  - numpy
+  - pandas
+  - matplotlib
