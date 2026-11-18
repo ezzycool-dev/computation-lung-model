@@ -1,0 +1,27 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  physics-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install GNU Octave
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends octave
+
+      - name: Run the model
+        run: octave-cli --no-gui --eval "run_upper_airway"
+
+      - name: Run the 13 physics checks
+        run: octave-cli --no-gui --eval "addpath('tests'); r = run_tests(); exit(~all([r.pass]))"
+
+      - name: Rebuild figures
+        run: |
+          pip install numpy pandas matplotlib
+          python scripts/make_figures.py
