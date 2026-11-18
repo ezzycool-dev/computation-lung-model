@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install GNU Octave
+      - name: Install GNU Octave and SUNDIALS
         uses: mamba-org/setup-micromamba@v2
         with:
           environment-file: environment.yml
