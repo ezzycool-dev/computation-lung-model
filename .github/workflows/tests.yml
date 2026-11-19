@@ -6,25 +6,17 @@ on:
 
 jobs:
   physics-checks:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install GNU Octave and SUNDIALS
-        uses: mamba-org/setup-micromamba@v2
-        with:
-          environment-file: environment.yml
-          init-shell: bash
-          cache-environment: true
+      - name: Install GNU Octave
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y octave
 
       - name: Run the model
-        shell: bash -el {0}
         run: octave-cli --no-gui --eval "run_upper_airway"
 
       - name: Run the 13 physics checks
-        shell: bash -el {0}
         run: octave-cli --no-gui --eval "addpath('tests'); r = run_tests(); exit(~all([r.pass]))"
-
-      - name: Rebuild figures
-        shell: bash -el {0}
-        run: python scripts/make_figures.py
